@@ -24,7 +24,7 @@ export const zh: TranslationKeys = {
 
   // Highlights
   'highlights.stat1Label': '活跃用户',
-  'highlights.stat1Value': '20K+',
+  'highlights.stat1Value': '30K+',
   'highlights.stat1Caption': '阿里集团内部生产验证',
   'highlights.stat2Label': '真实场景',
   'highlights.stat2Value': '1M+',

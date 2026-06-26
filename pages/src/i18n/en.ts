@@ -17,14 +17,14 @@ export const en: TranslationKeys = {
   'hero.pill3': 'Token Cost Only 1/9',
   'hero.cta1': 'Quick Start',
   'hero.cta2': 'View Benchmark',
-  'hero.users': '20K+ Active Users',
+  'hero.users': '30K+ Active Users',
   'hero.openSource': 'Fully Open Source',
   'hero.terminal': 'ocr terminal',
   'hero.badgeLabel': 'Benchmark #1',
 
   // Highlights
   'highlights.stat1Label': 'Active Users',
-  'highlights.stat1Value': '20K+',
+  'highlights.stat1Value': '30K+',
   'highlights.stat1Caption': 'Battle-tested inside Alibaba Group',
   'highlights.stat2Label': 'Real-World Tasks',
   'highlights.stat2Value': '1M+',
