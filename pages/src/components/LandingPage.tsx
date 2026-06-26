@@ -1,36 +1,49 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 import Navbar from './Navbar';
 import HeroSection from './HeroSection';
 import HighlightsSection from './HighlightsSection';
-import WhySection from './WhySection';
+import UseCasesSection from './UseCasesSection';
 import FeaturesSection from './FeaturesSection';
 import BenchmarkSection from './BenchmarkSection';
 import QuickStartSection from './QuickStartSection';
+import Footer from './Footer';
+import FadeInSection from './FadeInSection';
 
 const LandingPage: React.FC = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    const scrollTo = (location.state as { scrollTo?: string })?.scrollTo;
-    if (scrollTo) {
-      const el = document.getElementById(scrollTo);
-      if (el) {
-        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
-      }
-      window.history.replaceState({}, '');
-    }
-  }, [location.state]);
-
   return (
-    <div className="min-h-screen bg-dark-900 noise-overlay">
+    <div
+      style={{
+        width: '100%',
+        maxWidth: 1440,
+        margin: '0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#000000',
+        overflow: 'hidden',
+      }}
+    >
       <Navbar />
-      <HeroSection />
-      <HighlightsSection />
-      <WhySection />
-      <FeaturesSection />
-      <BenchmarkSection />
-      <QuickStartSection />
+      <FadeInSection>
+        <HeroSection />
+      </FadeInSection>
+      <FadeInSection delay={100}>
+        <HighlightsSection />
+      </FadeInSection>
+      <FadeInSection delay={100}>
+        <UseCasesSection />
+      </FadeInSection>
+      <FadeInSection delay={100}>
+        <FeaturesSection />
+      </FadeInSection>
+      <FadeInSection delay={100}>
+        <BenchmarkSection />
+      </FadeInSection>
+      <FadeInSection delay={100}>
+        <QuickStartSection />
+      </FadeInSection>
+      <FadeInSection>
+        <Footer />
+      </FadeInSection>
     </div>
   );
 };

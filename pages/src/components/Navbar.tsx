@@ -1,40 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
 import { useTranslation } from '../i18n';
-import logoSvg from '../../logo.svg';
+import socialIcon from '../assets/icons/svg_a1bab8ca.svg';
+import logoIcon from '../assets/images/容器-4_75a16b.svg';
+import externalLinkIcon from '../assets/icons/svg_ffadf990.svg';
 
 const Navbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const isDocsPage = location.pathname === '/docs';
-  const { t, language, setLanguage } = useTranslation();
-
-  const navItems = [
-    { label: t('navbar.features'), id: 'features' },
-    { label: t('navbar.benchmark'), id: 'benchmark' },
-    { label: t('navbar.quickstart'), id: 'quickstart' }
-  ];
-
-  const navigateToSection = (sectionId: string) => {
-    navigate('/', { state: { scrollTo: sectionId } });
-    setIsMobileMenuOpen(false);
-  };
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsMobileMenuOpen(false);
-  };
+  const { language, setLanguage, t } = useTranslation();
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'zh' : 'en');
@@ -42,105 +13,134 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled || isDocsPage
-          ? 'bg-dark-900/80 backdrop-blur-xl border-b border-dark-600/30 shadow-lg shadow-black/20'
-          : 'bg-transparent'
-      }`}
+      style={{
+        width: '100%',
+        height: 72,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottom: '1px solid rgba(61,61,61,0.6)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 100,
+      }}
     >
-      {/* Top edge glow */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-500/10 to-transparent opacity-0 group-hover:opacity-100"></div>
-
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
-          <img src={logoSvg} alt="OpenCodeReview" className="w-8 h-8 rounded-lg" />
-          <span className="font-bold text-lg tracking-tight">
-            <span className="text-white">Open Code Review</span>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 1440,
+          height: 72,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '0 32px',
+        }}
+      >
+        {/* Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <img src={logoIcon} alt="logo" style={{ width: 24, height: 24 }} />
+          <span style={{ color: '#fff', fontSize: 14, fontWeight: 500 }}>
+            Open Code Review
           </span>
-        </Link>
-
-        <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => isDocsPage ? navigateToSection(item.id) : scrollToSection(item.id)}
-              className="nav-link text-slate-400 hover:text-white text-sm font-medium transition-colors"
-            >
-              {item.label}
-            </button>
-          ))}
-          <Link
-            to="/docs"
-            className={`nav-link text-sm font-medium transition-colors flex items-center gap-1 ${
-              isDocsPage ? 'text-brand-400' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <i className="fa-solid fa-book text-xs"></i>
-            {t('navbar.docs')}
-          </Link>
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
+        {/* Nav Links */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <a href="#features" style={{ padding: '8px 16px', borderRadius: 8 }}>
+            <span style={{ color: '#FFFFFF', fontSize: 14, lineHeight: '20px' }}>
+              {t('navbar.features')}
+            </span>
+          </a>
+          <a href="#benchmark" style={{ padding: '8px 16px', borderRadius: 8 }}>
+            <span style={{ color: '#FFFFFF', fontSize: 14, lineHeight: '20px', opacity: 0.6 }}>
+              {t('navbar.benchmark')}
+            </span>
+          </a>
+          <a href="#quickstart" style={{ padding: '8px 16px', borderRadius: 8 }}>
+            <span style={{ color: '#FFFFFF', fontSize: 14, lineHeight: '20px', opacity: 0.6 }}>
+              {t('navbar.quickstart')}
+            </span>
+          </a>
+          <a
+            href="https://github.com/nicepkg/ocr"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <span style={{ color: '#FFFFFF', fontSize: 14, lineHeight: '20px', opacity: 0.6 }}>
+              {t('navbar.docs')}
+            </span>
+            <img src={externalLinkIcon} alt="" style={{ width: 18, height: 18 }} />
+          </a>
+          <a
+            href="https://github.com/nicepkg/ocr"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '8px 16px', borderRadius: 8 }}
+          >
+            <span style={{ color: '#FFFFFF', fontSize: 14, lineHeight: '20px', opacity: 0.6 }}>
+              {t('navbar.blog')}
+            </span>
+            <img src={externalLinkIcon} alt="" style={{ width: 18, height: 18 }} />
+          </a>
+        </div>
+
+        {/* Right section */}
+        <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 16 }}>
           <button
             onClick={toggleLanguage}
-            className="text-slate-400 hover:text-white text-sm font-medium px-3 py-1.5 rounded-lg border border-dark-600/30 hover:border-slate-500/50 transition-all"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: 0.6,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              color: '#FFFFFF',
+              fontSize: 14,
+              fontWeight: 500,
+              width: 20,
+              height: 20,
+            }}
+            title={language === 'en' ? 'Switch to Chinese' : '切换为英文'}
           >
-            {language === 'en' ? '中文' : 'EN'}
+            {language === 'en' ? 'En' : '中'}
           </button>
           <a
             href="https://github.com/alibaba/open-code-review"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-secondary text-brand-400 text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2"
+            style={{ display: 'flex', alignItems: 'center', opacity: 0.6 }}
           >
-            <i className="fa-brands fa-github"></i>
-            GitHub
+            <img src={socialIcon} alt="Social" style={{ width: 20, height: 20 }} />
           </a>
-          <button
-            onClick={() => isDocsPage ? navigateToSection('quickstart') : scrollToSection('quickstart')}
-            className="btn-primary text-dark-900 text-sm font-semibold px-4 py-2 rounded-lg"
+          <a
+            href="#quickstart"
+            style={{
+              height: 32,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 6,
+              padding: '4px 12px',
+              background: '#ffffff',
+              border: '1px solid #EBEBEB',
+              borderRadius: 6,
+              color: 'rgba(0,0,0,0.77)',
+              fontSize: 14,
+              fontWeight: 500,
+              textDecoration: 'none',
+            }}
           >
             {t('navbar.getStarted')}
-          </button>
+          </a>
         </div>
-
-        <button
-          className="md:hidden text-slate-400 hover:text-white"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'} text-lg`}></i>
-        </button>
       </div>
-
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-dark-900/95 backdrop-blur-xl border-b border-dark-600/30 px-6 py-4 flex flex-col gap-4">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => isDocsPage ? navigateToSection(item.id) : scrollToSection(item.id)}
-              className="text-slate-400 hover:text-white text-sm font-medium text-left transition-colors"
-            >
-              {item.label}
-            </button>
-          ))}
-          <Link
-            to="/docs"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`text-sm font-medium text-left transition-colors flex items-center gap-1 ${
-              isDocsPage ? 'text-brand-400' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <i className="fa-solid fa-book text-xs"></i>
-            {t('navbar.docs')}
-          </Link>
-          <button
-            onClick={toggleLanguage}
-            className="text-slate-400 hover:text-white text-sm font-medium text-left transition-colors"
-          >
-            {language === 'en' ? '切换到中文' : 'Switch to English'}
-          </button>
-        </div>
-      )}
     </nav>
   );
 };
