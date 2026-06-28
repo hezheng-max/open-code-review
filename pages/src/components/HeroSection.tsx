@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from '../i18n';
-import heroBg from '../assets/images/image_9e7821.png';
+import { useResponsive } from '../hooks/useResponsive';
+import ColorBends from './ColorBends';
 import lineIcon from '../assets/icons/svg_5c4f2730.svg';
 
 const terminalLines = [
@@ -137,12 +138,14 @@ const terminalLines = [
 
 const HeroSection: React.FC = () => {
   const { t } = useTranslation();
+  const { isMobile, isTablet } = useResponsive();
 
   return (
     <section
       style={{
-        width: '100%',
-        height: 960,
+        width: '100vw',
+        marginLeft: 'calc(-50vw + 50%)',
+        height: isMobile ? 820 : isTablet ? 800 : 960,
         position: 'relative',
         overflow: 'hidden',
         display: 'flex',
@@ -150,19 +153,29 @@ const HeroSection: React.FC = () => {
         alignItems: 'center',
       }}
     >
-      {/* Background Image */}
-      <img
-        src={heroBg}
-        alt=""
+      {/* Shader Background */}
+      <ColorBends
         style={{
           position: 'absolute',
-          left: '-50%',
+          left: 0,
           top: 0,
-          width: '180%',
-          height: 1027,
-          objectFit: 'cover',
+          width: '100%',
+          height: '100%',
           zIndex: 0,
         }}
+        colors={['#0d750d', '#042e04', '#066020']}
+        rotation={90}
+        speed={0.23}
+        scale={1.2}
+        frequency={1}
+        warpStrength={1}
+        mouseInfluence={1}
+        noise={0.33}
+        parallax={0.45}
+        iterations={1}
+        intensity={0.8}
+        bandWidth={6}
+        transparent
       />
 
       {/* Gradient overlay */}
@@ -186,10 +199,11 @@ const HeroSection: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
-          paddingTop: 120,
-          gap: 32,
-          maxWidth: 742,
+          paddingTop: isMobile ? 100 : 180,
+          paddingLeft: isMobile ? 20 : 0,
+          paddingRight: isMobile ? 20 : 0,
+          gap: isMobile ? 24 : 32,
+          maxWidth: isMobile ? '100%' : 742,
         }}
       >
         {/* Title */}
@@ -197,10 +211,10 @@ const HeroSection: React.FC = () => {
           <h1
             style={{
               color: '#FFFFFF',
-              fontSize: 48,
+              fontSize: isMobile ? 28 : isTablet ? 36 : 48,
               fontWeight: 500,
               textAlign: 'center',
-              lineHeight: '52px',
+              lineHeight: isMobile ? '34px' : isTablet ? '42px' : '52px',
               letterSpacing: '0.96px',
               margin: 0,
             }}
@@ -215,11 +229,11 @@ const HeroSection: React.FC = () => {
           <p
             style={{
               color: 'rgba(255,255,255,0.6)',
-              fontSize: 16,
+              fontSize: isMobile ? 14 : 16,
               textAlign: 'center',
               lineHeight: '24px',
               marginTop: 16,
-              maxWidth: 742,
+              maxWidth: isMobile ? '100%' : 742,
             }}
           >
             {t('hero.description')}
@@ -250,7 +264,7 @@ const HeroSection: React.FC = () => {
             {t('hero.quickStart')}
           </a>
           <a
-            href="#features"
+            href="#/docs"
             style={{
               width: 136,
               height: 32,
@@ -272,7 +286,8 @@ const HeroSection: React.FC = () => {
         {/* Terminal */}
         <div
           style={{
-            width: 692,
+            width: '100%',
+            maxWidth: isMobile ? '100%' : isTablet ? 560 : 692,
             borderRadius: 8,
             overflow: 'hidden',
             border: '1px solid rgba(255,255,255,0.08)',
@@ -302,6 +317,7 @@ const HeroSection: React.FC = () => {
               backdropFilter: 'blur(20px)',
               borderBottomLeftRadius: 8,
               borderBottomRightRadius: 8,
+              overflowX: 'hidden',
             }}
           >
             {terminalLines.map((line) => (
@@ -324,12 +340,12 @@ const HeroSection: React.FC = () => {
                     flexShrink: 0,
                   }}
                 >
-                  <span style={{ width: 19, color: 'rgba(255,255,255,0.3)', fontSize: 13, fontFamily: 'Menlo, monospace' }}>
+                  <span style={{ width: 19, color: 'rgba(255,255,255,0.3)', fontSize: 'clamp(10px, 1.8vw, 13px)', fontFamily: 'Menlo, monospace' }}>
                     {line.num}
                   </span>
                   {line.hasIcon && <img src={lineIcon} alt="" style={{ width: 15, height: 15 }} />}
                 </div>
-                <span style={{ fontSize: 15, fontFamily: 'Menlo, monospace', lineHeight: '20px' }}>
+                <span style={{ fontSize: 'clamp(10px, 1.8vw, 15px)', fontFamily: 'Menlo, monospace', lineHeight: '20px', whiteSpace: 'nowrap' }}>
                   {line.content}
                 </span>
               </div>

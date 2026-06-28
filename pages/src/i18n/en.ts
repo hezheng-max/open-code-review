@@ -89,6 +89,7 @@ export const en: TranslationKeys = {
   'quickstart.commentReview': '# Review current changes',
   'quickstart.commentBranch': '# Review diff between branches',
   'quickstart.commentCommit': '# Review a specific commit',
+    'quickstart.copied': 'Copied!',
 
   // Footer
   'footer.brand': 'Open Code Review',

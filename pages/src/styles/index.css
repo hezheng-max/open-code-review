@@ -7,7 +7,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -39,10 +39,74 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: rgba(255,255,255,0.15);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2BDE5E;
+  background: rgba(255,255,255,0.3);
+}
+
+/* UseCases card hover effect */
+@property --sweep-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: true;
+}
+
+.usecase-card {
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.17);
+  border-radius: 8px;
+  background: transparent;
+  transition: border-color 0.4s ease;
+}
+
+.usecase-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 9px;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--sweep-angle),
+    transparent 0%,
+    #31FF75 8%,
+    #33DDF7 16%,
+    rgba(55,252,170,0.79) 24%,
+    transparent 40%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.usecase-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.14) 0%, #141313 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.usecase-card:hover {
+  border-color: transparent;
+}
+
+.usecase-card:hover::before {
+  opacity: 1;
+}
+
+.usecase-card:hover::after {
+  opacity: 1;
 }

@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { useTranslation } from '../i18n';
+import { useResponsive } from '../hooks/useResponsive';
 import copyIcon from '../assets/icons/svg_08c42e4e.svg';
 import chevronDown from '../assets/icons/svg_9671d81f.svg';
 import chevronRight from '../assets/icons/svg_4b85b73b.svg';
 import playIcon from '../assets/icons/svg_14ec8d7d.svg';
 
-const CodeBlock: React.FC<{ label: string; code: string; multiline?: boolean }> = ({ label, code, multiline }) => (
+/* Toast */
+const Toast: React.FC<{ message: string; visible: boolean }> = ({ message, visible }) =>
+  ReactDOM.createPortal(
+    <div
+      style={{
+        position: 'fixed',
+        top: 88,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        background: 'rgba(255,255,255,0.1)',
+        border: '1px solid rgba(255,255,255,0.2)',
+        color: 'rgba(255,255,255,0.85)',
+        padding: '5px 14px',
+        borderRadius: 6,
+        fontSize: 12,
+        fontWeight: 500,
+        pointerEvents: 'none',
+        opacity: visible ? 1 : 0,
+        transition: 'opacity 0.15s ease',
+        zIndex: 9999,
+        backdropFilter: 'blur(8px)',
+      }}
+    >
+      {message}
+    </div>,
+    document.body
+  );
+
+const CodeBlock: React.FC<{ label: string; code: string; multiline?: boolean; onCopy: (text: string) => void }> = ({ label, code, multiline, onCopy }) => (
   <div style={{ display: 'flex', flexDirection: 'column' }}>
     <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, margin: '0 0 6px 0' }}>{label}</p>
     <div
@@ -22,7 +52,10 @@ const CodeBlock: React.FC<{ label: string; code: string; multiline?: boolean }> 
       <pre style={{ color: 'rgba(255,255,255,0.8)', fontSize: 13, fontFamily: 'Menlo, monospace', margin: 0, whiteSpace: 'pre-wrap', lineHeight: '22px' }}>
         {code}
       </pre>
-      <div style={{ paddingTop: 4, paddingBottom: 4, cursor: 'pointer', flexShrink: 0 }}>
+      <div
+        onClick={() => onCopy(code)}
+        style={{ paddingTop: 4, paddingBottom: 4, cursor: 'pointer', flexShrink: 0 }}
+      >
         <img src={copyIcon} alt="copy" style={{ width: 16, height: 16 }} />
       </div>
     </div>
@@ -31,19 +64,33 @@ const CodeBlock: React.FC<{ label: string; code: string; multiline?: boolean }> 
 
 const QuickStartSection: React.FC = () => {
   const { t } = useTranslation();
+  const { isMobile, isTablet } = useResponsive();
+  const [toastVisible, setToastVisible] = useState(false);
+
+  const handleCopy = useCallback((text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setToastVisible(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!toastVisible) return;
+    const timer = setTimeout(() => setToastVisible(false), 1200);
+    return () => clearTimeout(timer);
+  }, [toastVisible]);
 
   return (
     <section
       id="quickstart"
-      style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '120px 0', overflow: 'hidden' }}
+      style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: isMobile ? '60px 20px' : isTablet ? '80px 40px' : '80px 0', overflow: 'hidden' }}
     >
-      <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 48 }}>
+      <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: isMobile ? 32 : 48 }}>
         {/* Header */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
           <span style={{ color: '#2BDE5E', fontSize: 16, fontWeight: 500, letterSpacing: '0.48px' }}>
             {t('quickstart.sectionLabel')}
           </span>
-          <h2 style={{ color: '#FFFFFF', fontSize: 48, fontWeight: 500, textAlign: 'center', lineHeight: '52px', letterSpacing: '0.96px', margin: 0, maxWidth: 758 }}>
+          <h2 style={{ color: '#FFFFFF', fontSize: isMobile ? 28 : 48, fontWeight: 500, textAlign: 'center', lineHeight: isMobile ? '34px' : '52px', letterSpacing: '0.96px', margin: 0, maxWidth: 758 }}>
             {t('quickstart.title')}
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, textAlign: 'center', lineHeight: '24px', margin: 0, maxWidth: 646 }}>
@@ -52,7 +99,7 @@ const QuickStartSection: React.FC = () => {
         </div>
 
         {/* Steps */}
-        <div style={{ width: 720, display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div style={{ width: isMobile ? '100%' : isTablet ? '100%' : 720, display: 'flex', flexDirection: 'column', gap: 24 }}>
           {/* Step 1 */}
           <div style={{ display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 8, padding: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
@@ -68,8 +115,8 @@ const QuickStartSection: React.FC = () => {
               <img src={chevronDown} alt="" style={{ width: 16, height: 16 }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <CodeBlock label={t('quickstart.step1Label1')} code="npm i -g @alibaba-group/open-code-review" />
-              <CodeBlock label={t('quickstart.step1Label2')} code="ocr version" />
+              <CodeBlock label={t('quickstart.step1Label1')} code="npm i -g @alibaba-group/open-code-review" onCopy={handleCopy} />
+              <CodeBlock label={t('quickstart.step1Label2')} code="ocr version" onCopy={handleCopy} />
             </div>
           </div>
 
@@ -88,7 +135,7 @@ const QuickStartSection: React.FC = () => {
               <img src={chevronRight} alt="" style={{ width: 16, height: 16 }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <CodeBlock label={t('quickstart.step2Label1')} code="ocr config provider" />
+              <CodeBlock label={t('quickstart.step2Label1')} code="ocr config provider" onCopy={handleCopy} />
               <CodeBlock
                 label={t('quickstart.step2Label2')}
                 code={`ocr config set llm.url https://api.anthropic.com \\
@@ -96,8 +143,9 @@ const QuickStartSection: React.FC = () => {
     && ocr config set llm.model claude-opus-4-6 \\
     && ocr config set llm.use_anthropic true`}
                 multiline
+                onCopy={handleCopy}
               />
-              <CodeBlock label={t('quickstart.step2Label3')} code="ocr llm test" />
+              <CodeBlock label={t('quickstart.step2Label3')} code="ocr llm test" onCopy={handleCopy} />
             </div>
           </div>
 
@@ -127,11 +175,13 @@ ocr review --from main --to feature-auth
 ${t('quickstart.commentCommit')}
 ocr review --commit abc123`}
                 multiline
+                onCopy={handleCopy}
               />
             </div>
           </div>
         </div>
       </div>
+      <Toast message={t('quickstart.copied')} visible={toastVisible} />
     </section>
   );
 };

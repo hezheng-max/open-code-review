@@ -1,13 +1,37 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useTranslation } from '../i18n';
+import { useResponsive } from '../hooks/useResponsive';
+import iconCase1 from '../assets/icons/svg_8cbea9f7.svg';
+import iconCase2a from '../assets/icons/svg_7c4689e0.svg';
+import iconCase2b from '../assets/icons/svg_7c6b9cb4.svg';
+import iconCase2c from '../assets/icons/svg_005970e1.svg';
+import iconCase3 from '../assets/icons/svg_4b63c0f5.svg';
 
 const UseCasesSection: React.FC = () => {
   const { t } = useTranslation();
+  const { isMobile, isTablet } = useResponsive();
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    const card = cardRefs.current[index];
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const angle = Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI) + 90;
+    card.style.setProperty('--sweep-angle', `${angle}deg`);
+  }, []);
+
+  const handleMouseLeave = useCallback((index: number) => {
+    const card = cardRefs.current[index];
+    if (!card) return;
+    card.style.setProperty('--sweep-angle', '0deg');
+  }, []);
 
   const useCases = [
-    { title: t('usecases.case1Title'), desc: t('usecases.case1Desc'), highlighted: true },
-    { title: t('usecases.case2Title'), desc: t('usecases.case2Desc'), highlighted: false },
-    { title: t('usecases.case3Title'), desc: t('usecases.case3Desc'), highlighted: false },
+    { title: t('usecases.case1Title'), desc: t('usecases.case1Desc') },
+    { title: t('usecases.case2Title'), desc: t('usecases.case2Desc') },
+    { title: t('usecases.case3Title'), desc: t('usecases.case3Desc') },
   ];
 
   return (
@@ -17,11 +41,11 @@ const UseCasesSection: React.FC = () => {
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
-        padding: '120px 0',
+        padding: isMobile ? '60px 20px' : isTablet ? '80px 40px' : '80px 0',
         overflow: 'hidden',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', gap: 48 }}>
+      <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', gap: isMobile ? 32 : 48 }}>
         {/* Header */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
           <span
@@ -38,10 +62,10 @@ const UseCasesSection: React.FC = () => {
           <h2
             style={{
               color: '#FFFFFF',
-              fontSize: 48,
+              fontSize: isMobile ? 28 : 48,
               fontWeight: 500,
               textAlign: 'center',
-              lineHeight: '52px',
+              lineHeight: isMobile ? '34px' : '52px',
               letterSpacing: '0.96px',
               margin: 0,
             }}
@@ -51,67 +75,68 @@ const UseCasesSection: React.FC = () => {
         </div>
 
         {/* Cards */}
-        <div style={{ display: 'flex', gap: 1 }}>
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 16 }}>
           {useCases.map((item, i) => (
             <div
               key={i}
+              ref={(el) => { cardRefs.current[i] = el; }}
+              className="usecase-card"
+              onMouseMove={(e) => handleMouseMove(e, i)}
+              onMouseLeave={() => handleMouseLeave(i)}
               style={{
                 flex: 1,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 padding: '48px 32px',
-                borderRadius: 8,
-                border: item.highlighted
-                  ? '1px solid transparent'
-                  : '1px solid rgba(255,255,255,0.08)',
-                background: item.highlighted
-                  ? 'linear-gradient(180deg, rgba(0,0,0,0.14) 0%, #141313 100%)'
-                  : 'transparent',
-                borderImage: item.highlighted
-                  ? 'linear-gradient(143deg, #31FF75 1%, #33DDF7 14%, rgba(55,252,170,0.79) 32%, rgba(255,255,255,0) 49%) 1'
-                  : undefined,
               }}
             >
-              {/* Icon placeholder */}
-              <div
-                style={{
-                  width: 64,
-                  height: 64,
-                  marginBottom: 24,
-                  borderRadius: '50%',
-                  background: 'rgba(43,222,94,0.1)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#2BDE5E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <p
+                {/* Icon */}
+                <div
                   style={{
-                    color: '#FFFFFF',
-                    fontSize: 18,
-                    fontWeight: 500,
-                    margin: 0,
+                    width: 64,
+                    height: 64,
+                    marginBottom: 24,
+                    position: 'relative',
+                    zIndex: 2,
                   }}
                 >
-                  {item.title}
-                </p>
-                <p
-                  style={{
-                    color: 'rgba(255,255,255,0.5)',
-                    fontSize: 14,
-                    lineHeight: '20px',
-                    margin: 0,
-                  }}
-                >
-                  {item.desc}
-                </p>
-              </div>
+                  {i === 0 && (
+                    <img src={iconCase1} alt="" style={{ position: 'absolute', left: 5.33, top: 2, width: 53, height: 58 }} />
+                  )}
+                  {i === 1 && (
+                    <div style={{ position: 'absolute', left: 0, top: 0, width: 64, height: 64, transform: 'scale(1.1)', transformOrigin: 'center center' }}>
+                      <img src={iconCase2c} alt="" style={{ position: 'absolute', left: -28, top: -5, width: 48, height: 45, zIndex: 2 }} />
+                      <img src={iconCase2a} alt="" style={{ position: 'absolute', left: 4, top: 30, width: 48, height: 44, zIndex: 0 }} />
+                      <img src={iconCase2b} alt="" style={{ position: 'absolute', left: 40, top: -8, width: 48, height: 53, zIndex: 1 }} />
+                    </div>
+                  )}
+                  {i === 2 && (
+                    <img src={iconCase3} alt="" style={{ position: 'absolute', left: 3.67, top: 3, width: 57, height: 60 }} />
+                  )}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, position: 'relative', zIndex: 2 }}>
+                  <p
+                    style={{
+                      color: '#FFFFFF',
+                      fontSize: 18,
+                      fontWeight: 500,
+                      margin: 0,
+                    }}
+                  >
+                    {item.title}
+                  </p>
+                  <p
+                    style={{
+                      color: 'rgba(255,255,255,0.5)',
+                      fontSize: 14,
+                      lineHeight: '20px',
+                      margin: 0,
+                    }}
+                  >
+                    {item.desc}
+                  </p>
+                </div>
             </div>
           ))}
         </div>

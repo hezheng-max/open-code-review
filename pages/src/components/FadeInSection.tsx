@@ -17,7 +17,7 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, delay = 0 }) =>
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.08 }
     );
 
     if (ref.current) {
@@ -32,8 +32,7 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, delay = 0 }) =>
       ref={ref}
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
-        transition: `opacity 0.8s ease ${delay}ms, transform 0.8s ease ${delay}ms`,
+        transition: `opacity 0.6s ease ${delay}ms`,
       }}
     >
       {children}

@@ -44,10 +44,12 @@ module.exports = {
   },
   devServer: {
     port: 3030,
+    host: '0.0.0.0',
+    allowedHosts: 'all',
     static: { directory: __dirname },
     historyApiFallback: {
       index: '/index.html',
-      rewrites: [{ from: /^\/_p\/\d+\//, to: '/index.html' }]
+      rewrites: [{ from: /^\/\_p\/\d+\//, to: '/index.html' }]
     }
   },
   plugins: [

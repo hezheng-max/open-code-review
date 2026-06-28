@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from '../i18n';
+import { useResponsive } from '../hooks/useResponsive';
 import icon1 from '../assets/icons/svg_d445cd56.svg';
 import icon2 from '../assets/icons/svg_16f21c54.svg';
 import icon3 from '../assets/icons/svg_0d75d088.svg';
@@ -9,6 +10,7 @@ import icon6 from '../assets/icons/svg_2bf95464.svg';
 
 const FeaturesSection: React.FC = () => {
   const { t } = useTranslation();
+  const { isMobile, isTablet } = useResponsive();
 
   const features = [
     { icon: icon1, title: t('features.feat1Title'), desc: t('features.feat1Desc') },
@@ -26,17 +28,17 @@ const FeaturesSection: React.FC = () => {
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
-        padding: '120px 0',
+        padding: isMobile ? '60px 20px' : isTablet ? '80px 40px' : '80px 0',
         overflow: 'hidden',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', gap: 48 }}>
+      <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', gap: isMobile ? 32 : 48 }}>
         {/* Header */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
           <span style={{ color: '#2BDE5E', fontSize: 16, fontWeight: 500, lineHeight: '22px', letterSpacing: '0.48px' }}>
             {t('features.sectionBadge')}
           </span>
-          <h2 style={{ color: '#FFFFFF', fontSize: 48, fontWeight: 500, textAlign: 'center', lineHeight: '52px', letterSpacing: '0.96px', margin: 0, maxWidth: 758 }}>
+          <h2 style={{ color: '#FFFFFF', fontSize: isMobile ? 28 : 48, fontWeight: 500, textAlign: 'center', lineHeight: isMobile ? '34px' : '52px', letterSpacing: '0.96px', margin: 0, maxWidth: 758 }}>
             {t('features.title')}
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, textAlign: 'center', lineHeight: '24px', margin: 0, maxWidth: 646 }}>
@@ -48,22 +50,26 @@ const FeaturesSection: React.FC = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
             border: '1px solid rgba(255,255,255,0.16)',
             borderRadius: 8,
           }}
         >
-          {features.map((feat, i) => (
+          {features.map((feat, i) => {
+            const cols = isMobile ? 1 : isTablet ? 2 : 3;
+            const isLastCol = (i % cols) === cols - 1;
+            const isLastRow = i >= features.length - (features.length % cols || cols);
+            return (
             <div
               key={i}
               style={{
-                padding: '32px 28px',
+                padding: isMobile ? '24px 20px' : '32px 28px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 16,
-                borderRight: (i % 3 !== 2) ? '1px solid rgba(255,255,255,0.16)' : 'none',
-                borderBottom: i < 3 ? '1px solid rgba(255,255,255,0.16)' : 'none',
-                minHeight: 272,
+                borderRight: isLastCol ? 'none' : '1px solid rgba(255,255,255,0.16)',
+                borderBottom: isLastRow ? 'none' : '1px solid rgba(255,255,255,0.16)',
+                minHeight: isMobile ? undefined : 272,
               }}
             >
               <div
@@ -88,7 +94,8 @@ const FeaturesSection: React.FC = () => {
                 </p>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

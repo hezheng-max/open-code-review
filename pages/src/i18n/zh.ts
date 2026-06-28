@@ -91,6 +91,7 @@ export const zh: TranslationKeys = {
   'quickstart.commentReview': '# 审查当前变更',
   'quickstart.commentBranch': '# 审查分支间的差异',
   'quickstart.commentCommit': '# 审查特定提交',
+    'quickstart.copied': '已复制！',
 
   // Footer
   'footer.brand': 'Open Code Review',
