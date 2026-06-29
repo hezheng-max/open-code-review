@@ -16,7 +16,7 @@
   <a href="https://goreportcard.com/report/github.com/alibaba/open-code-review"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/alibaba/open-code-review?style=flat-square" /></a>
   <a href="https://github.com/alibaba/open-code-review/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/alibaba/open-code-review?style=flat-square" /></a>
   <a href="https://deepwiki.com/alibaba/open-code-review"><img alt="Ask DeepWiki" src="https://deepwiki.com/badge.svg" /></a>
-  <a href="https://www.bestpractices.dev/projects/13328"><img alt="OpenSSF Best Practices" src="https://www.bestpractices.dev/projects/13328/badge" /></a>
+  <a href="https://www.bestpractices.dev/projects/13328"><img alt="OpenSSF Best Practices" src="https://img.shields.io/badge/OpenSSF-Silver-4C566A?style=flat-square" /></a>
 </p>
 <p align="center">
   <a href="#supported-platforms"><img alt="Windows" src="https://img.shields.io/badge/Windows-supported-blue.svg" /></a>
@@ -210,7 +210,20 @@ Optional settings:
 |-----|-------------|
 | `providers.<name>.auth_header` | Auth header: `x-api-key` or `authorization` (default: `authorization`) |
 | `providers.<name>.extra_body` | Custom JSON fields merged into the request body |
+| `providers.<name>.extra_headers` | Comma-separated `key=value` pairs of custom HTTP headers added to every request |
 | `providers.<name>.models` | Model list for interactive selection |
+
+**`extra_headers` (optional):** Adds custom HTTP headers to every LLM API request. Useful for proxies, gateways, or enterprise endpoints that require additional headers (e.g. organization IDs, tracing IDs). Format is comma-separated `key=value` pairs. Double-quote values that contain commas:
+
+```bash
+ocr config set llm.extra_headers "X-Org-ID=org-123,X-Forwarded-For=\"1.2.3.4,5.6.7.8\""
+```
+
+You can also set extra headers per-provider:
+
+```bash
+ocr config set providers.anthropic.extra_headers "X-Org-ID=org-123"
+```
 
 **Environment variables (highest priority)**
 
@@ -557,6 +570,45 @@ Layers 1–3 share the same JSON format:
 - Within each layer, rules are evaluated in declaration order — the first match wins.
 - If a rule file does not exist, it is silently skipped.
 
+**The `rule` field supports both inline content and file paths.** The system auto-detects which one you mean:
+
+1. If the value contains newlines → **inline content** (multi-line rules are never file paths).
+2. If the value is a single line, contains no spaces, and ends with `.md` / `.txt` / `.markdown` → **file path**.
+   - Absolute paths (starting with `/`) are used directly.
+   - Relative paths are resolved against the project root. Path traversal (e.g. `../../etc/passwd.md`) is blocked. If not found, a `[WARN]` is emitted and the rule is cleared (no fallback to inline).
+   - The file must pass validation: whitelisted extension, ≤ 512 KB, and resolved symlink target must also be a whitelisted extension. If validation fails, the rule is cleared.
+3. Otherwise → **inline content**.
+
+```json
+{
+  "rules": [
+    {
+      "path": "**/*mapper*.xml",
+      "rule": "docs/sql-rules.md"
+    },
+    {
+      "path": "**/*.java",
+      "rule": "Always check for null safety and resource leaks"
+    },
+    {
+      "path": "**/*.go",
+      "rule": "shared/go-concurrency.md"
+    },
+    {
+      "path": "**/*.py",
+      "rule": "/Users/me/team-rules/python.md"
+    }
+  ]
+}
+```
+
+- `docs/sql-rules.md` — relative path, resolved from `<project>/docs/sql-rules.md`.
+- `Always check for null safety…` — inline string, used directly.
+- `shared/go-concurrency.md` — relative path, same resolution.
+- `/Users/me/team-rules/python.md` — absolute path, used directly.
+
+> Absolute paths can access files outside the project directory — this is intentional. `rule.json` is authored by project maintainers, i.e. trusted input. Teams can store shared rules at a common path (e.g. `/opt/company-rules/`) instead of copying them into every project.
+
 ### Path Filtering
 
 Rule files also support `include` and `exclude` fields to control which files enter the review scope:
@@ -612,10 +664,14 @@ Config file: `~/.opencodereview/config.json`
 | `providers.<name>.model` | string | Model name for the provider |
 | `providers.<name>.models` | array | Optional provider model list for interactive selection |
 | `providers.<name>.auth_header` | string | `x-api-key` \| `authorization` |
+| `providers.<name>.extra_body` | object | JSON object merged into every request body |
+| `providers.<name>.extra_headers` | string | Comma-separated `key=value` HTTP headers |
 | `custom_providers.<name>.*` | — | Same fields as `providers.<name>.*`, including optional `models` |
 | `llm.url` | string | `https://api.openai.com/v1/chat/completions` |
 | `llm.auth_token` | string | `sk-xxxxxxx` |
 | `llm.auth_header` | string | Anthropic only: `x-api-key` \| `authorization` |
+| `llm.extra_body` | object | JSON object merged into every request body |
+| `llm.extra_headers` | string | Comma-separated `key=value` HTTP headers |
 | `llm.model` | string | `claude-opus-4-6` |
 | `llm.use_anthropic` | boolean | `true` \| `false` |
 | `language` | string | Any language name, e.g. `English`, `Chinese` (default: `English`) |
@@ -633,6 +689,7 @@ Environment variables take precedence over the config file.
 | `OCR_LLM_URL` | LLM API endpoint URL |
 | `OCR_LLM_TOKEN` | API key / auth token |
 | `OCR_LLM_AUTH_HEADER` | Anthropic auth header (`x-api-key` or `authorization`) |
+| `OCR_LLM_EXTRA_HEADERS` | Comma-separated `key=value` HTTP headers |
 | `OCR_LLM_MODEL` | Model name |
 | `OCR_USE_ANTHROPIC` | `true` = Anthropic, `false` = OpenAI |
 
