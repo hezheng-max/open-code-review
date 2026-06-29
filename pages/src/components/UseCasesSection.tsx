@@ -62,10 +62,10 @@ const UseCasesSection: React.FC = () => {
           <h2
             style={{
               color: '#FFFFFF',
-              fontSize: isMobile ? 28 : 48,
+              fontSize: isMobile ? 28 : isTablet ? 36 : 48,
               fontWeight: 500,
               textAlign: 'center',
-              lineHeight: isMobile ? '34px' : '52px',
+              lineHeight: isMobile ? '34px' : isTablet ? '42px' : '52px',
               letterSpacing: '0.96px',
               margin: 0,
             }}

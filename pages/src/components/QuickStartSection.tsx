@@ -108,7 +108,7 @@ const QuickStartSection: React.FC = () => {
           <span style={{ color: '#2BDE5E', fontSize: 16, fontWeight: 500, letterSpacing: '0.48px' }}>
             {t('quickstart.sectionLabel')}
           </span>
-          <h2 style={{ color: '#FFFFFF', fontSize: isMobile ? 28 : 48, fontWeight: 500, textAlign: 'center', lineHeight: isMobile ? '34px' : '52px', letterSpacing: '0.96px', margin: 0, maxWidth: 758 }}>
+          <h2 style={{ color: '#FFFFFF', fontSize: isMobile ? 28 : isTablet ? 36 : 48, fontWeight: 500, textAlign: 'center', lineHeight: isMobile ? '34px' : isTablet ? '42px' : '52px', letterSpacing: '0.96px', margin: 0, maxWidth: 758 }}>
             {t('quickstart.title')}
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, textAlign: 'center', lineHeight: '24px', margin: 0, maxWidth: 646 }}>
