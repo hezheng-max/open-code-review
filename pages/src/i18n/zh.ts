@@ -14,6 +14,7 @@ export const zh: TranslationKeys = {
   'hero.description': 'Open Code Review 将阿里巴巴经过实战检验的代码审查 Agent 引入您的工作流程。连接任意 LLM，数据完全私有，获得开发者真正采纳的审查意见。',
   'hero.quickStart': '快速开始',
   'hero.learnMore': '了解更多',
+  'hero.terminal': '终端',
 
   // Highlights
   'highlights.stat1Value': '> 30%',
@@ -87,11 +88,11 @@ export const zh: TranslationKeys = {
   'quickstart.step2Label3': '验证配置',
   'quickstart.step3Title': '运行审查',
   'quickstart.step3Desc': '开始你的第一次代码审查。',
-  'quickstart.step3Label1': '交互式设置（推荐）',
+  'quickstart.step3Label1': '运行审查命令',
   'quickstart.commentReview': '# 审查当前变更',
   'quickstart.commentBranch': '# 审查分支间的差异',
   'quickstart.commentCommit': '# 审查特定提交',
-    'quickstart.copied': '已复制！',
+  'quickstart.copied': '已复制！',
 
   // Footer
   'footer.brand': 'Open Code Review',

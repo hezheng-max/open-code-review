@@ -305,7 +305,7 @@ const HeroSection: React.FC = () => {
             }}
           >
             <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, fontFamily: 'Menlo, monospace' }}>
-              Terminal
+              {t('hero.terminal')}
             </span>
           </div>
           {/* Terminal body */}

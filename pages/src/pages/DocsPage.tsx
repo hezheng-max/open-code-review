@@ -100,19 +100,25 @@ const DocsPage: React.FC = () => {
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(() => {
         setToastVisible(true);
+      }).catch(() => {
+        fallbackCopy(text);
       });
     } else {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      setToastVisible(true);
+      fallbackCopy(text);
     }
   }, []);
+
+  const fallbackCopy = (text: string) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const success = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    if (success) setToastVisible(true);
+  };
 
   useEffect(() => {
     if (!toastVisible) return;

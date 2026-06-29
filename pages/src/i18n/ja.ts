@@ -14,6 +14,7 @@ export const ja: TranslationKeys = {
   'hero.description': 'Open Code Review は、アリババの実戦検証済みコードレビュー Agent をワークフローに統合します。任意の LLM に接続し、データを完全にプライベートに保ち、開発者が実際に採用するレビューコメントを取得できます。',
   'hero.quickStart': 'クイックスタート',
   'hero.learnMore': '詳しく見る',
+  'hero.terminal': 'ターミナル',
 
   // Highlights
   'highlights.stat1Value': '> 30%',
@@ -87,7 +88,7 @@ export const ja: TranslationKeys = {
   'quickstart.step2Label3': '設定確認',
   'quickstart.step3Title': 'レビュー実行',
   'quickstart.step3Desc': '最初のコードレビューを開始します。',
-  'quickstart.step3Label1': '対話式セットアップ（推奨）',
+  'quickstart.step3Label1': 'レビュー実行',
   'quickstart.commentReview': '# 現在の変更をレビュー',
   'quickstart.commentBranch': '# ブランチ間の差分をレビュー',
   'quickstart.commentCommit': '# 特定のコミットをレビュー',

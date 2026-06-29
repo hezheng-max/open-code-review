@@ -14,6 +14,7 @@ export const en: TranslationKeys = {
   'hero.description': 'Open Code Review brings Alibaba\'s battle-tested code review Agent into your workflow. Connect any LLM, keep data fully private, and get review comments developers actually adopt.',
   'hero.quickStart': 'Quick Start',
   'hero.learnMore': 'Learn More',
+  'hero.terminal': 'Terminal',
 
   // Highlights
   'highlights.stat1Value': '> 30%',
@@ -85,11 +86,11 @@ export const en: TranslationKeys = {
   'quickstart.step2Label3': 'Verify Configuration',
   'quickstart.step3Title': 'Run Review',
   'quickstart.step3Desc': 'Start your first code review.',
-  'quickstart.step3Label1': 'Interactive Setup (Recommended)',
+  'quickstart.step3Label1': 'Review Commands',
   'quickstart.commentReview': '# Review current changes',
   'quickstart.commentBranch': '# Review diff between branches',
   'quickstart.commentCommit': '# Review a specific commit',
-    'quickstart.copied': 'Copied!',
+  'quickstart.copied': 'Copied!',
 
   // Footer
   'footer.brand': 'Open Code Review',
