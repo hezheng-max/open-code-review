@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from '../i18n';
 import { useResponsive } from '../hooks/useResponsive';
+import { useSectionTitleStyle } from '../hooks/useResponsiveStyle';
 import ocrSourceIcon from '../assets/images/icon-ocr-source.svg';
 import claudeCodeIcon from '../assets/images/icon-claude-code.svg';
 import codexIcon from '../assets/images/icon-codex.svg';
@@ -55,6 +56,7 @@ const MEDAL_RANKS = ['🥇', '🥈', '🥉'];
 const BenchmarkSection: React.FC = () => {
   const { t } = useTranslation();
   const { isMobile, isTablet } = useResponsive();
+  const titleStyle = useSectionTitleStyle();
   const [sortField, setSortField] = useState<SortField>('f1');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
@@ -99,7 +101,7 @@ const BenchmarkSection: React.FC = () => {
           <span style={{ color: '#2BDE5E', fontSize: 16, fontWeight: 500, letterSpacing: '0.48px' }}>
             {t('benchmark.sectionLabel')}
           </span>
-          <h2 style={{ color: '#FFFFFF', fontSize: isMobile ? 28 : isTablet ? 36 : 48, fontWeight: 500, textAlign: 'center', lineHeight: isMobile ? '34px' : isTablet ? '42px' : '52px', letterSpacing: '0.96px', margin: 0, maxWidth: 758 }}>
+          <h2 style={{ color: '#FFFFFF', fontSize: titleStyle.fontSize, fontWeight: 500, textAlign: 'center', lineHeight: titleStyle.lineHeight, letterSpacing: '0.96px', margin: 0, maxWidth: 758 }}>
             {t('benchmark.title')}
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, textAlign: 'center', lineHeight: '24px', margin: 0, maxWidth: 646 }}>
