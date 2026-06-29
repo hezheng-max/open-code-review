@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from '../i18n';
 import { useResponsive } from '../hooks/useResponsive';
-import icon1 from '../assets/icons/svg_d445cd56.svg';
-import icon2 from '../assets/icons/svg_16f21c54.svg';
-import icon3 from '../assets/icons/svg_0d75d088.svg';
-import icon4 from '../assets/icons/svg_d61bb6bc.svg';
-import icon5 from '../assets/icons/svg_208b117d.svg';
-import icon6 from '../assets/icons/svg_2bf95464.svg';
+import icon1 from '../assets/icons/icon-feature-architecture.svg';
+import icon2 from '../assets/icons/icon-feature-positioning.svg';
+import icon3 from '../assets/icons/icon-feature-multi-model.svg';
+import icon4 from '../assets/icons/icon-feature-concurrent.svg';
+import icon5 from '../assets/icons/icon-feature-compression.svg';
+import icon6 from '../assets/icons/icon-feature-rules.svg';
 
 const FeaturesSection: React.FC = () => {
   const { t } = useTranslation();

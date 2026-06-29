@@ -1,11 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 import { useTranslation } from '../i18n';
 import { useResponsive } from '../hooks/useResponsive';
-import iconCase1 from '../assets/icons/svg_8cbea9f7.svg';
-import iconCase2a from '../assets/icons/svg_7c4689e0.svg';
-import iconCase2b from '../assets/icons/svg_7c6b9cb4.svg';
-import iconCase2c from '../assets/icons/svg_005970e1.svg';
-import iconCase3 from '../assets/icons/svg_4b63c0f5.svg';
+import iconCase1 from '../assets/icons/icon-usecase-developer.svg';
+import iconCase2a from '../assets/icons/icon-usecase-platform-a.svg';
+import iconCase2b from '../assets/icons/icon-usecase-platform-b.svg';
+import iconCase2c from '../assets/icons/icon-usecase-platform-c.svg';
+import iconCase3 from '../assets/icons/icon-usecase-researcher.svg';
 
 const UseCasesSection: React.FC = () => {
   const { t } = useTranslation();

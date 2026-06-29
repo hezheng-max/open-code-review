@@ -10,7 +10,7 @@ import ocrIcon6 from '../assets/images/provider-6.svg';
 import ocrIcon7 from '../assets/images/provider-7.svg';
 import claudeCodeIcon from '../assets/images/icon-claude-code.svg';
 import codexIcon from '../assets/images/icon-codex.svg';
-import sortIcon from '../assets/icons/svg_5824ce0f.svg';
+import sortIcon from '../assets/icons/icon-sort.svg';
 import trophyGold from '../assets/icons/trophy-gold.svg';
 import trophySilver from '../assets/icons/trophy-silver.svg';
 import trophyBronze from '../assets/icons/trophy-bronze.svg';

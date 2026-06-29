@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from '../i18n';
 import { useResponsive } from '../hooks/useResponsive';
 import ColorBends from './ColorBends';
-import lineIcon from '../assets/icons/svg_5c4f2730.svg';
+import lineIcon from '../assets/icons/icon-terminal-prompt.svg';
 
 const terminalLines = [
   {

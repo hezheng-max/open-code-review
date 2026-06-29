@@ -2,10 +2,10 @@ import React, { useState, useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useTranslation } from '../i18n';
 import { useResponsive } from '../hooks/useResponsive';
-import copyIcon from '../assets/icons/svg_08c42e4e.svg';
-import chevronDown from '../assets/icons/svg_9671d81f.svg';
-import chevronRight from '../assets/icons/svg_4b85b73b.svg';
-import playIcon from '../assets/icons/svg_14ec8d7d.svg';
+import copyIcon from '../assets/icons/icon-copy.svg';
+import chevronDown from '../assets/icons/icon-chevron-down.svg';
+import chevronRight from '../assets/icons/icon-chevron-right.svg';
+import playIcon from '../assets/icons/icon-play.svg';
 
 /* Toast */
 const Toast: React.FC<{ message: string; visible: boolean }> = ({ message, visible }) =>

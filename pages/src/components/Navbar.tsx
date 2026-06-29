@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../i18n';
 import { useResponsive } from '../hooks/useResponsive';
-import socialIcon from '../assets/icons/svg_a1bab8ca.svg';
+import socialIcon from '../assets/icons/icon-github.svg';
 import brandIcon from '../assets/images/brandicon.svg';
 
 import type { Language } from '../i18n/types';

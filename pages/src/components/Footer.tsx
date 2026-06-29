@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import githubIcon from '../assets/icons/svg_a1bab8ca.svg';
-import langIcon from '../assets/icons/svg_202ab621.svg';
+import githubIcon from '../assets/icons/icon-github.svg';
+import langIcon from '../assets/icons/icon-language.svg';
 import { useTranslation } from '../i18n/context';
 import { useResponsive } from '../hooks/useResponsive';
 import type { Language } from '../i18n/types';

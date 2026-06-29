@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { useTranslation } from '../i18n';
 import Footer from '../components/Footer';
 import { useResponsive } from '../hooks/useResponsive';
-import copyIcon from '../assets/icons/svg_08c42e4e.svg';
+import copyIcon from '../assets/icons/icon-copy.svg';
 import docDownloadIcon from '../assets/icons/doc-download.svg';
 import docCheckCircleIcon from '../assets/icons/doc-check-circle.svg';
 import docEditIcon from '../assets/icons/doc-edit.svg';
