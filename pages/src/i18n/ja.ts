@@ -16,21 +16,21 @@ export const ja: TranslationKeys = {
   'hero.learnMore': '詳しく見る',
 
   // Highlights
-  'highlights.stat1Value': '30K+',
-  'highlights.stat1Label': 'アクティブユーザー',
-  'highlights.stat1Caption': 'アリババグループ内で実戦検証済み',
+  'highlights.stat1Value': '> 30%',
+  'highlights.stat1Label': '採用率',
+  'highlights.stat1Caption': 'Alibabaグループ内で実戦検証済み',
   'highlights.stat2Value': '1M+',
   'highlights.stat2Label': '実タスク',
   'highlights.stat2Caption': '実行されたコードレビュータスク',
   'highlights.stat3Value': '1/9',
   'highlights.stat3Label': 'トークンコスト',
   'highlights.stat3Caption': 'Claude Code比較 · 1,000 PR',
-  'highlights.stat4Value': '20K+',
+  'highlights.stat4Value': '25.10%',
   'highlights.stat4Label': 'AACR-BENCH',
   'highlights.stat4Caption': 'SEM.F1 ベンチマークスコア',
-  'highlights.stat5Value': '> 30%',
-  'highlights.stat5Label': '採用率',
-  'highlights.stat5Caption': 'SEM.F1 ベンチマークスコア',
+  'highlights.stat5Value': '30K+',
+  'highlights.stat5Label': 'アクティブユーザー',
+  'highlights.stat5Caption': 'Alibabaグループ内で実戦検証済み',
 
   // Use Cases
   'usecases.sectionLabel': 'ユースケース',

@@ -1,13 +1,13 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from '../i18n';
 import { useResponsive } from '../hooks/useResponsive';
-import ocrIcon1 from '../assets/images/容器-4_9c88f0.svg';
-import ocrIcon2 from '../assets/images/容器-4_2aef28.svg';
-import ocrIcon3 from '../assets/images/容器-4_dea526.svg';
-import ocrIcon4 from '../assets/images/容器-4_0d7ff8.svg';
-import ocrIcon5 from '../assets/images/容器-4_a52b60.svg';
-import ocrIcon6 from '../assets/images/容器-4_9ceae3.svg';
-import ocrIcon7 from '../assets/images/容器-4_2ed867.svg';
+import ocrIcon1 from '../assets/images/provider-1.svg';
+import ocrIcon2 from '../assets/images/provider-2.svg';
+import ocrIcon3 from '../assets/images/provider-3.svg';
+import ocrIcon4 from '../assets/images/provider-4.svg';
+import ocrIcon5 from '../assets/images/provider-5.svg';
+import ocrIcon6 from '../assets/images/provider-6.svg';
+import ocrIcon7 from '../assets/images/provider-7.svg';
 import claudeCodeIcon from '../assets/images/icon-claude-code.svg';
 import codexIcon from '../assets/images/icon-codex.svg';
 import sortIcon from '../assets/icons/svg_5824ce0f.svg';
@@ -198,7 +198,7 @@ const BenchmarkSection: React.FC = () => {
               >
                 {/* Rank */}
                 <div style={{ width: 120, padding: '10px 20px' }}>
-                  <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, fontFamily: 'Menlo, monospace' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: idx < 3 ? 18 : 14, fontFamily: 'Menlo, monospace' }}>
                     {rankDisplay}
                   </span>
                 </div>

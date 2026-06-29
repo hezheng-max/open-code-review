@@ -21,7 +21,7 @@ const Toast: React.FC<{ message: string; visible: boolean }> = ({ message, visib
         background: 'rgba(255,255,255,0.1)',
         border: '1px solid rgba(255,255,255,0.2)',
         color: 'rgba(255,255,255,0.85)',
-        padding: '5px 14px',
+        padding: '5px 8px 5px 10px',
         borderRadius: 6,
         fontSize: 12,
         fontWeight: 500,
@@ -97,9 +97,21 @@ const DocsPage: React.FC = () => {
   const sections = sectionDefs.map(s => ({ ...s, label: t(s.labelKey) }));
 
   const handleCopy = useCallback((text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        setToastVisible(true);
+      });
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
       setToastVisible(true);
-    });
+    }
   }, []);
 
   useEffect(() => {
@@ -405,10 +417,10 @@ const DocsPage: React.FC = () => {
 
         {/* ─── Right sidebar: CONTENTS (fixed) ─── */}
         {!isMobile && (
-          <div style={{ position: 'fixed', top: 112, right: 40, width: 220, zIndex: 30 }}>
+          <div style={{ position: 'fixed', top: 112, right: 'max(40px, calc((100vw - 1440px) / 2 + 32px))', width: 220, zIndex: 30 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
               <img src={docContentsIcon} style={{ width: 20, height: 20 }} />
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.05em' }}>CONTENTS</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.05em' }}>{t('docs.toc')}</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {sections.map((s) => (

@@ -19,7 +19,7 @@ const Toast: React.FC<{ message: string; visible: boolean }> = ({ message, visib
         background: 'rgba(255,255,255,0.1)',
         border: '1px solid rgba(255,255,255,0.2)',
         color: 'rgba(255,255,255,0.85)',
-        padding: '5px 14px',
+        padding: '5px 8px 5px 10px',
         borderRadius: 6,
         fontSize: 12,
         fontWeight: 500,
@@ -68,9 +68,21 @@ const QuickStartSection: React.FC = () => {
   const [toastVisible, setToastVisible] = useState(false);
 
   const handleCopy = useCallback((text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        setToastVisible(true);
+      });
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
       setToastVisible(true);
-    });
+    }
   }, []);
 
   useEffect(() => {

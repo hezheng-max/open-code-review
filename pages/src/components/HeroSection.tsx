@@ -245,7 +245,6 @@ const HeroSection: React.FC = () => {
           <a
             href="#quickstart"
             style={{
-              width: 136,
               height: 32,
               display: 'flex',
               justifyContent: 'center',
@@ -266,11 +265,11 @@ const HeroSection: React.FC = () => {
           <a
             href="#/docs"
             style={{
-              width: 136,
               height: 32,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              padding: '4px 12px',
               background: 'rgba(0,0,0,0.9)',
               borderRadius: 6,
               color: '#fff',

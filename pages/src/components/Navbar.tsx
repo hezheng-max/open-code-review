@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../i18n';
 import { useResponsive } from '../hooks/useResponsive';
 import socialIcon from '../assets/icons/svg_a1bab8ca.svg';
 import brandIcon from '../assets/images/brandicon.svg';
+
+import type { Language } from '../i18n/types';
+
+const LANG_OPTIONS: { value: Language; label: string }[] = [
+  { value: 'en', label: 'English' },
+  { value: 'zh', label: '中文' },
+  { value: 'ja', label: '日本語' },
+];
 
 const navTabs = [
   { path: '/', labelKey: 'navbar.features' },
@@ -17,6 +25,16 @@ const Navbar: React.FC = () => {
   const { isMobile } = useResponsive();
   const location = useLocation();
   const navigate = useNavigate();
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) setLangOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   const currentPath = location.pathname;
 
@@ -94,6 +112,75 @@ const Navbar: React.FC = () => {
 
         {/* Right section */}
         <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 16 }}>
+          {/* Language Switcher */}
+          <div ref={langRef} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <button
+              onClick={() => setLangOpen(v => !v)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'none',
+                border: '1px solid #FFFFFF',
+                borderRadius: 4,
+                cursor: 'pointer',
+                opacity: 0.6,
+                padding: 0,
+                width: 18,
+                height: 18,
+                boxSizing: 'border-box' as const,
+              }}
+            >
+              <span style={{
+                fontSize: 10,
+                fontWeight: 600,
+                color: '#FFFFFF',
+                lineHeight: '18px',
+                textAlign: 'center' as const,
+                width: '100%',
+                fontFamily: language === 'ja' ? "'Hiragino Sans', sans-serif" : "'PingFang SC', -apple-system, sans-serif",
+              }}>
+                {language === 'en' ? 'En' : language === 'zh' ? '中' : 'あ'}
+              </span>
+            </button>
+            {langOpen && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: 8,
+                  background: '#1a1a1a',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  borderRadius: 8,
+                  padding: 4,
+                  zIndex: 200,
+                  minWidth: 100,
+                }}
+              >
+                {LANG_OPTIONS.map(opt => (
+                  <button
+                    key={opt.value}
+                    onClick={() => { setLanguage(opt.value); setLangOpen(false); }}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '8px 12px',
+                      background: opt.value === language ? 'rgba(255,255,255,0.08)' : 'transparent',
+                      border: 'none',
+                      borderRadius: 6,
+                      color: opt.value === language ? '#fff' : 'rgba(255,255,255,0.6)',
+                      fontSize: 13,
+                      textAlign: 'left' as const,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           <a
             href="https://github.com/alibaba/open-code-review"
             target="_blank"

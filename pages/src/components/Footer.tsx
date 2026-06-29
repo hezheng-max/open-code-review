@@ -31,17 +31,20 @@ const Footer: React.FC = () => {
       style={{
         width: '100%',
         borderTop: '1px solid rgba(255,255,255,0.12)',
-        padding: isMobile ? '32px 20px' : '64px 120px',
+        padding: isMobile ? '32px 16px' : '64px 32px',
+        display: 'flex',
+        justifyContent: 'center',
       }}
     >
       <div
         style={{
+          width: '100%',
           display: 'flex',
           flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-between',
           alignItems: isMobile ? 'flex-start' : 'center',
           gap: isMobile ? 16 : 0,
-          maxWidth: 1200,
+          maxWidth: 1440,
           margin: '0 auto',
         }}
       >

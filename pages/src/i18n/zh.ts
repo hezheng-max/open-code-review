@@ -16,21 +16,21 @@ export const zh: TranslationKeys = {
   'hero.learnMore': '了解更多',
 
   // Highlights
-  'highlights.stat1Value': '30K+',
-  'highlights.stat1Label': '活跃用户',
-  'highlights.stat1Caption': '阿里巴巴集团内部实战验证',
+  'highlights.stat1Value': '> 30%',
+  'highlights.stat1Label': '采纳率',
+  'highlights.stat1Caption': '经阿里巴巴集团内部实战验证',
   'highlights.stat2Value': '1M+',
   'highlights.stat2Label': '真实任务',
   'highlights.stat2Caption': '已执行的代码审查任务',
   'highlights.stat3Value': '1/9',
   'highlights.stat3Label': 'TOKEN 成本',
   'highlights.stat3Caption': '对比 Claude Code · 1,000 个 PR',
-  'highlights.stat4Value': '20K+',
+  'highlights.stat4Value': '25.10%',
   'highlights.stat4Label': 'AACR-BENCH',
   'highlights.stat4Caption': 'SEM.F1 基准得分',
-  'highlights.stat5Value': '> 30%',
-  'highlights.stat5Label': '采纳率',
-  'highlights.stat5Caption': 'SEM.F1 基准得分',
+  'highlights.stat5Value': '30K+',
+  'highlights.stat5Label': '活跃用户',
+  'highlights.stat5Caption': '经阿里巴巴集团内部实战验证',
 
   // Use Cases
   'usecases.sectionLabel': '使用场景',
