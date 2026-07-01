@@ -405,14 +405,15 @@ const HeroSection: React.FC = () => {
     {toastVisible && ReactDOM.createPortal(
       <div style={{
         position: 'fixed',
-        top: 24,
+        top: 88,
         left: '50%',
         transform: 'translateX(-50%)',
-        background: 'rgba(50,50,50,0.95)',
-        color: '#fff',
-        padding: '8px 16px',
-        borderRadius: 8,
-        fontSize: 14,
+        background: 'rgba(255,255,255,0.1)',
+        border: '1px solid rgba(255,255,255,0.2)',
+        color: 'rgba(255,255,255,0.85)',
+        padding: '5px 14px',
+        borderRadius: 6,
+        fontSize: 12,
         zIndex: 9999,
         backdropFilter: 'blur(8px)',
       }}>
