@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { useTranslation } from '../i18n';
 import { useResponsive } from '../hooks/useResponsive';
 import ColorBends from './ColorBends';
+import docDownloadIcon from '../assets/icons/doc-download.svg';
+import copyIcon from '../assets/icons/icon-copy.svg';
 
 
 const TC = {
@@ -115,8 +118,40 @@ const terminalLines = [
 const HeroSection: React.FC = () => {
   const { t } = useTranslation();
   const { isMobile, isTablet } = useResponsive();
+  const [toastVisible, setToastVisible] = useState(false);
+
+  const fallbackCopy = (text: string) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const success = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    if (success) setToastVisible(true);
+  };
+
+  const handleCopy = useCallback((text: string) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        setToastVisible(true);
+      }).catch(() => {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!toastVisible) return;
+    const timer = setTimeout(() => setToastVisible(false), 1200);
+    return () => clearTimeout(timer);
+  }, [toastVisible]);
 
   return (
+    <>
     <section
       style={{
         width: '100vw',
@@ -182,6 +217,33 @@ const HeroSection: React.FC = () => {
           maxWidth: isMobile ? '100%' : 742,
         }}
       >
+        {/* Install Badge */}
+        <div
+          style={{
+            width: 'auto',
+            height: 32,
+            background: 'rgba(0,0,0,0.8)',
+            borderRadius: 500,
+            border: '1px solid rgba(255,255,255,0.16)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '0 12px',
+            marginBottom: isMobile ? 8 : 0,
+          }}
+        >
+          <img src={docDownloadIcon} alt="" style={{ width: 16, height: 16, flexShrink: 0 }} />
+          <p className="install-text-shimmer" style={{ fontSize: 12, fontWeight: 400, margin: 0, letterSpacing: '0.2px', whiteSpace: 'nowrap' }}>
+            npm i -g @alibaba-group/open-code-review
+          </p>
+          <img
+            src={copyIcon}
+            alt="Copy"
+            style={{ width: 16, height: 16, cursor: 'pointer', flexShrink: 0 }}
+            onClick={() => handleCopy('npm i -g @alibaba-group/open-code-review')}
+          />
+        </div>
+
         {/* Title */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <h1
@@ -327,6 +389,25 @@ const HeroSection: React.FC = () => {
         </div>
       </div>
     </section>
+    {toastVisible && ReactDOM.createPortal(
+      <div style={{
+        position: 'fixed',
+        top: 24,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        background: 'rgba(50,50,50,0.95)',
+        color: '#fff',
+        padding: '8px 16px',
+        borderRadius: 8,
+        fontSize: 14,
+        zIndex: 9999,
+        backdropFilter: 'blur(8px)',
+      }}>
+        Copied!
+      </div>,
+      document.body
+    )}
+    </>
   );
 };
 
