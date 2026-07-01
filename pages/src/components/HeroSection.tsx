@@ -115,10 +115,18 @@ const terminalLines = [
   { num: 12, content: <span className="terminal-cursor" style={{ color: TC.text }}>｜</span> },
 ];
 
+const INSTALL_CMD = 'npm i -g @alibaba-group/open-code-review';
+
 const HeroSection: React.FC = () => {
   const { t } = useTranslation();
   const { isMobile, isTablet } = useResponsive();
   const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    setToastVisible(true);
+  };
 
   const fallbackCopy = (text: string) => {
     const textarea = document.createElement('textarea');
@@ -129,20 +137,25 @@ const HeroSection: React.FC = () => {
     textarea.select();
     const success = document.execCommand('copy');
     document.body.removeChild(textarea);
-    if (success) setToastVisible(true);
+    if (success) {
+      showToast(t('hero.copied'));
+    } else {
+      showToast(t('hero.copyFailed'));
+    }
   };
 
-  const handleCopy = useCallback((text: string) => {
+  const handleCopy = useCallback(async (text: string) => {
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(() => {
-        setToastVisible(true);
-      }).catch(() => {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(t('hero.copied'));
+      } catch {
         fallbackCopy(text);
-      });
+      }
     } else {
       fallbackCopy(text);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (!toastVisible) return;
@@ -234,13 +247,13 @@ const HeroSection: React.FC = () => {
         >
           <img src={docDownloadIcon} alt="" style={{ width: 16, height: 16, flexShrink: 0 }} />
           <p className="install-text-shimmer" style={{ fontSize: 12, fontWeight: 400, margin: 0, letterSpacing: '0.2px', whiteSpace: 'nowrap' }}>
-            npm i -g @alibaba-group/open-code-review
+            {INSTALL_CMD}
           </p>
           <img
             src={copyIcon}
             alt="Copy"
             style={{ width: 16, height: 16, cursor: 'pointer', flexShrink: 0 }}
-            onClick={() => handleCopy('npm i -g @alibaba-group/open-code-review')}
+            onClick={() => handleCopy(INSTALL_CMD)}
           />
         </div>
 
@@ -403,7 +416,7 @@ const HeroSection: React.FC = () => {
         zIndex: 9999,
         backdropFilter: 'blur(8px)',
       }}>
-        Copied!
+        {toastMessage}
       </div>,
       document.body
     )}

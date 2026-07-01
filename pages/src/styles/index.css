@@ -146,3 +146,11 @@ a {
   -webkit-text-fill-color: transparent;
   animation: text-shimmer 5s ease-in-out infinite;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .install-text-shimmer {
+    animation: none;
+    background: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+  }
+}
