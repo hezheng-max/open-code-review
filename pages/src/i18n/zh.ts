@@ -3,14 +3,14 @@ import { TranslationKeys } from './types';
 export const zh: TranslationKeys = {
   // Navbar
   'navbar.features': '核心特性',
-  'navbar.benchmark': '排行榜',
+  'navbar.benchmark': '基准测试',
   'navbar.quickstart': '快速开始',
   'navbar.docs': '文档',
   'navbar.blog': '博客',
   'navbar.getStarted': '开始使用',
 
   // Hero
-  'hero.title': 'AI 代码审查\n经百万真实任务验证',
+  'hero.title': 'AI 代码审查\n百万真实任务验证',
   'hero.description': 'Open Code Review 将阿里巴巴经过实战检验的代码审查 Agent 引入您的工作流程。连接任意 LLM，数据完全私有，获得开发者真正采纳的审查意见。',
   'hero.quickStart': '快速开始',
   'hero.learnMore': '了解更多',
@@ -96,7 +96,7 @@ export const zh: TranslationKeys = {
 
   // Footer
   'footer.brand': 'Open Code Review',
-  'footer.copyright': '© 版权所有 2026。保留所有权利。',
+  'footer.copyright': '© 2026 版权所有。保留所有权利。',
 
   // Docs Page
   'docs.toc': '目录',
@@ -134,7 +134,7 @@ export const zh: TranslationKeys = {
   'docs.configKeyToken': 'API 密钥',
   'docs.configKeyModel': '模型名称',
   'docs.configKeyAnthropic': '使用 Anthropic SDK',
-  'docs.configKeyExtraBody': '供应商特定的请求体字段 (JSON)',
+  'docs.configKeyExtraBody': '提供商特定的请求体字段 (JSON)',
   'docs.configKeyLanguage': '输出语言',
   'docs.configKeyTelemetry': '遥测',
   'docs.configVerify': '验证配置',
@@ -175,8 +175,8 @@ export const zh: TranslationKeys = {
   'docs.reviewFlag11Desc': '最大并发 git 子进程数',
   'docs.reviewNote': '注意：<code>--from/--to</code> 和 <code>--commit</code> 不能同时使用。指定 <code>--from</code> 时，<code>--to</code> 也必须指定。',
   'docs.viewerTitle': 'ocr viewer',
-  'docs.viewerDesc': '启动 WebUI 会话查看器，在 Web 界面中浏览审查结果。',
-  'docs.viewerNote': '运行后将启动一个本地 HTTP 服务器，提供可视化界面浏览审查结果。',
+  'docs.viewerDesc': '启动 WebUI 会话查看器，在 Web 界面中浏览审查会话日志。',
+  'docs.viewerNote': '运行后将启动一个本地 HTTP 服务器，提供可视化界面浏览审查会话日志。',
   'docs.envTitle': 'Claude Code 集成',
   'docs.envDesc': '如果您已经是 Claude Code 用户并配置了以下环境变量，Open Code Review 将自动识别——无需额外配置：',
   'docs.envNote': '您也可以使用 <code>ocr config</code> 覆盖或补充这些设置。',
