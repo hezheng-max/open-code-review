@@ -1,9 +1,11 @@
 import React, { useMemo, useEffect, useRef, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import mermaid from 'mermaid';
 import { useTranslation } from '../i18n';
 import copyIcon from '../assets/icons/icon-copy.svg';
+import { generateHeadingId } from '../utils/headingId';
 
 // Initialize mermaid with dark theme
 mermaid.initialize({
@@ -75,9 +77,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
     // Custom renderer to generate heading IDs matching the TOC extraction logic
     const renderer = new marked.Renderer();
     renderer.heading = function ({ text, depth }: { text: string; depth: number }) {
-      // Strip inline markdown formatting for ID generation
-      const plainText = text.replace(/<[^>]+>/g, '').replace(/[`*_\[\]()]/g, '').trim();
-      const id = plainText.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, '-').replace(/^-|-$/g, '');
+      const id = generateHeadingId(text);
       return `<h${depth} id="${id}">${text}</h${depth}>\n`;
     };
     // Strip trailing newlines from code blocks to avoid empty line at bottom
@@ -94,7 +94,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
       breaks: false,
       renderer,
     });
-    return marked.parse(content) as string;
+    return DOMPurify.sanitize(marked.parse(content) as string);
   }, [content]);
 
   // Render mermaid diagrams and add copy buttons to code blocks after DOM update

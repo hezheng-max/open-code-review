@@ -263,6 +263,9 @@ export const en: TranslationKeys = {
   'docs.sidebar.cicd': 'CI/CD',
   'docs.sidebar.contributing': 'Contributing',
   'docs.sidebar.faq': 'FAQ',
-'docs.search.placeholder': 'Search...',
-'docs.search.noResults': 'No results found',
+  'docs.search.placeholder': 'Search...',
+  'docs.search.noResults': 'No results found',
+  'docs.search.hint.select': 'Select',
+  'docs.search.hint.open': 'Open',
+  'docs.search.hint.close': 'Close',
 };

@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import { useResponsive } from '../hooks/useResponsive';
 import { getDocContent, getDocTitle, DocSlug, searchDocs } from '../content/docs';
+import { generateHeadingId } from '../utils/headingId';
 import docContentsIcon from '../assets/icons/doc-contents.svg';
 import searchIcon from '../assets/icons/icon-search.svg';
 import '../styles/docs-markdown.css';
@@ -80,7 +81,7 @@ function extractHeadings(markdown: string): { id: string; text: string; level: n
     if (match) {
       const level = match[1].length;
       const text = match[2].replace(/[`*_\[\]()]/g, '').trim();
-      const id = text.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, '-').replace(/^-|-$/g, '');
+      const id = generateHeadingId(text);
       headings.push({ id, text, level });
     }
   }
@@ -189,17 +190,22 @@ const DocsPage: React.FC = () => {
     const slugMap: Record<string, DocSlug> = { 'ci': 'cicd' };
     const slug = (slugMap[lastSegment] || lastSegment) as DocSlug;
     // Verify it's a valid doc slug
-    const validSlugs: DocSlug[] = ['overview','quickstart','installation','configuration','cli-reference','review-rules','architecture','tools','viewer','telemetry','integrations','agent-skill','claude-code','subprocess','cicd','contributing','faq'];
+    const validSlugs = flatDocList.map(d => d.slug);
     if (validSlugs.includes(slug)) {
       e.preventDefault();
       navigateToDoc(slug);
-      // Handle anchor scroll after navigation
+      // Handle anchor scroll after navigation with reliable retry
       const anchor2 = href.split('#')[1];
       if (anchor2) {
-        setTimeout(() => {
+        const tryScroll = (attempts: number) => {
           const el = document.getElementById(anchor2);
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else if (attempts < 10) {
+            requestAnimationFrame(() => tryScroll(attempts + 1));
+          }
+        };
+        requestAnimationFrame(() => tryScroll(0));
       }
     }
   }, [navigateToDoc]);
@@ -647,16 +653,16 @@ const DocsPage: React.FC = () => {
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     <kbd style={{ background: 'rgba(255,255,255,0.85)', borderRadius: 3, padding: '0px 3px', fontSize: 9, color: '#000000' }}>↑</kbd>
                     <kbd style={{ background: 'rgba(255,255,255,0.85)', borderRadius: 3, padding: '0px 3px', fontSize: 9, color: '#000000' }}>↓</kbd>
-                    选择
+                    {t('docs.search.hint.select')}
                   </span>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     <kbd style={{ background: 'rgba(255,255,255,0.85)', borderRadius: 3, padding: '0px 3px', fontSize: 9, color: '#000000' }}>↵</kbd>
-                    打开
+                    {t('docs.search.hint.open')}
                   </span>
                 </div>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <kbd style={{ background: 'rgba(255,255,255,0.85)', borderRadius: 3, padding: '0px 3px', fontSize: 9, color: '#000000' }}>esc</kbd>
-                  关闭
+                  {t('docs.search.hint.close')}
                 </span>
               </div>
             )}

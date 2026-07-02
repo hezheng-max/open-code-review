@@ -246,7 +246,7 @@ export const ja: TranslationKeys = {
   'docs.copy': 'コピー',
 
   // Docs Sidebar
-  'docs.sidebar.gettingStarted': 'クイックスタート',
+  'docs.sidebar.gettingStarted': '入門ガイド',
   'docs.sidebar.userGuide': '利用ガイド',
   'docs.sidebar.overview': '概要',
   'docs.sidebar.quickstart': 'クイックスタート',
@@ -265,6 +265,9 @@ export const ja: TranslationKeys = {
   'docs.sidebar.cicd': 'CI/CD',
   'docs.sidebar.contributing': 'コントリビュート',
   'docs.sidebar.faq': 'FAQ',
-'docs.search.placeholder': '検索...',
-'docs.search.noResults': '結果が見つかりません',
+  'docs.search.placeholder': '検索...',
+  'docs.search.noResults': '結果が見つかりません',
+  'docs.search.hint.select': '選択',
+  'docs.search.hint.open': '開く',
+  'docs.search.hint.close': '閉じる',
 };

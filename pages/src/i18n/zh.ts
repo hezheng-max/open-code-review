@@ -246,7 +246,7 @@ export const zh: TranslationKeys = {
   'docs.copy': '复制',
 
   // Docs Sidebar
-  'docs.sidebar.gettingStarted': '快速开始',
+  'docs.sidebar.gettingStarted': '入门指南',
   'docs.sidebar.userGuide': '使用指南',
   'docs.sidebar.overview': '概览',
   'docs.sidebar.quickstart': '快速开始',
@@ -265,6 +265,9 @@ export const zh: TranslationKeys = {
   'docs.sidebar.cicd': 'CI/CD',
   'docs.sidebar.contributing': '贡献',
   'docs.sidebar.faq': 'FAQ',
-'docs.search.placeholder': '搜索...',
-'docs.search.noResults': '未找到结果',
+  'docs.search.placeholder': '搜索...',
+  'docs.search.noResults': '未找到结果',
+  'docs.search.hint.select': '选择',
+  'docs.search.hint.open': '打开',
+  'docs.search.hint.close': '关闭',
 };

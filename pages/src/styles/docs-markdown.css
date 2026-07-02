@@ -1,6 +1,6 @@
 /* Docs Markdown dark theme styles — matching DocsPage design */
 .docs-markdown {
-  font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', Roboto, sans-serif;
   font-size: 14px;
   line-height: 24px;
   color: rgba(255, 255, 255, 0.7);
