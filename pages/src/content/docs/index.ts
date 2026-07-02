@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* Docs content index — imports all markdown files and provides a lookup by slug + language */
 
 // English docs
@@ -118,21 +117,26 @@ function stripFrontmatter(md: string): string {
 }
 
 /**
+ * Get raw content for a slug in the given language, with English fallback.
+ */
+function getRawContent(slug: DocSlug, language: string): string {
+  const langDocs = docsMap[language] || docsMap.en;
+  return langDocs[slug] || enDocs[slug] || '';
+}
+
+/**
  * Get the markdown content for a given doc slug and language.
  * Falls back to English if the language is not found.
  */
 export function getDocContent(slug: DocSlug, language: string): string {
-  const langDocs = docsMap[language] || docsMap.en;
-  const raw = langDocs[slug] || enDocs[slug] || '';
-  return stripFrontmatter(raw);
+  return stripFrontmatter(getRawContent(slug, language));
 }
 
 /**
  * Get the title from frontmatter
  */
 export function getDocTitle(slug: DocSlug, language: string): string {
-  const langDocs = docsMap[language] || docsMap.en;
-  const raw = langDocs[slug] || enDocs[slug] || '';
+  const raw = getRawContent(slug, language);
   if (raw.startsWith('---')) {
     const end = raw.indexOf('---', 3);
     if (end !== -1) {
@@ -154,7 +158,7 @@ export function searchDocs(query: string, language: string): { slug: DocSlug; ti
   const lowerQuery = query.toLowerCase();
   const slugs = Object.keys(langDocs) as DocSlug[];
   for (const slug of slugs) {
-    const raw = langDocs[slug] || '';
+    const raw = langDocs[slug] || enDocs[slug] || '';
     const content = stripFrontmatter(raw);
     const lowerContent = content.toLowerCase();
     const idx = lowerContent.indexOf(lowerQuery);

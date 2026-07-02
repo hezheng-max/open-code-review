@@ -1,6 +1,6 @@
-import React, { useMemo, useEffect, useRef, useState, useCallback } from 'react';
+import React, { useMemo, useEffect, useRef, useState, useCallback, useId } from 'react';
 import ReactDOM from 'react-dom';
-import { marked } from 'marked';
+import { Marked, Renderer } from 'marked';
 import DOMPurify from 'dompurify';
 import mermaid from 'mermaid';
 import { useTranslation } from '../i18n';
@@ -75,10 +75,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
 
   const html = useMemo(() => {
     // Custom renderer to generate heading IDs matching the TOC extraction logic
-    const renderer = new marked.Renderer();
+    const renderer = new Renderer();
     renderer.heading = function ({ text, depth }: { text: string; depth: number }) {
       const id = generateHeadingId(text);
-      return `<h${depth} id="${id}">${text}</h${depth}>\n`;
+      // Escape id attribute value to prevent XSS
+      const safeId = id.replace(/"/g, '&quot;');
+      return `<h${depth} id="${safeId}">${text}</h${depth}>\n`;
     };
     // Strip trailing newlines from code blocks to avoid empty line at bottom
     renderer.code = function ({ text, lang, escaped }: { text: string; lang?: string; escaped?: boolean }) {
@@ -87,19 +89,16 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
       const langClass = lang ? ` class="language-${lang}"` : '';
       const isMultiline = trimmed.includes('\n');
       const alignItems = isMultiline ? 'flex-start' : 'center';
-      return `<pre style="display:flex;align-self:stretch;justify-content:space-between;align-items:${alignItems};background:#000000;border-radius:6px;padding:4px 16px;border:1px solid rgba(255,255,255,0.16);margin:0 0 16px 0;overflow-x:auto;"><code${langClass} style="flex:1;min-width:0;">${content}</code></pre>\n`;
+      return `<pre style="align-items:${alignItems};"><code${langClass}>${content}</code></pre>\n`;
     };
-    marked.setOptions({
-      gfm: true,
-      breaks: false,
-      renderer,
-    });
-    return DOMPurify.sanitize(marked.parse(content) as string);
+    const instance = new Marked({ gfm: true, breaks: false, renderer });
+    return DOMPurify.sanitize(instance.parse(content) as string);
   }, [content]);
 
   // Render mermaid diagrams and add copy buttons to code blocks after DOM update
   useEffect(() => {
     if (!containerRef.current) return;
+    let cancelled = false;
 
     // Add copy buttons to all pre > code blocks (except mermaid)
     const preBlocks = containerRef.current.querySelectorAll('pre');
@@ -124,24 +123,28 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
     const mermaidBlocks = containerRef.current.querySelectorAll('code.language-mermaid');
     if (mermaidBlocks.length === 0) return;
 
-    mermaidBlocks.forEach(async (block, index) => {
+    const renderPromises = Array.from(mermaidBlocks).map(async (block) => {
       const pre = block.parentElement;
       if (!pre) return;
       const code = block.textContent || '';
       try {
-        const id = `mermaid-diagram-${Date.now()}-${index}`;
+        const id = `mermaid-diagram-${crypto.randomUUID()}`;
         const { svg } = await mermaid.render(id, code);
+        if (cancelled) return;
         // Replace the <pre> with rendered SVG
         const wrapper = document.createElement('div');
         wrapper.className = 'mermaid-rendered';
         wrapper.innerHTML = svg;
         pre.replaceWith(wrapper);
       } catch (e) {
+        if (cancelled) return;
         // If rendering fails, show the code block normally
         (block as HTMLElement).style.display = 'block';
         console.warn('[Mermaid] render failed:', e);
       }
     });
+
+    return () => { cancelled = true; };
   }, [html]);
 
   return (

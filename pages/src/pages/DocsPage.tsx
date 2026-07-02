@@ -80,7 +80,11 @@ function extractHeadings(markdown: string): { id: string; text: string; level: n
     const match = line.match(/^(#{2,3})\s+(.+)$/);
     if (match) {
       const level = match[1].length;
-      const text = match[2].replace(/[`*_\[\]()]/g, '').trim();
+      // Strip markdown link syntax [text](url) → text, then strip other formatting
+      const text = match[2]
+        .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+        .replace(/[`*_\[\]()]/g, '')
+        .trim();
       const id = generateHeadingId(text);
       headings.push({ id, text, level });
     }
@@ -250,6 +254,9 @@ const DocsPage: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        // Don't intercept when focused in other input/textarea (unless search is already open)
+        const activeEl = document.activeElement;
+        if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA') && !searchOpen) return;
         e.preventDefault();
         setSearchOpen(prev => !prev);
       }
@@ -259,7 +266,7 @@ const DocsPage: React.FC = () => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [searchOpen]);
 
   /* Focus input when search opens */
   useEffect(() => {
@@ -364,9 +371,6 @@ const DocsPage: React.FC = () => {
                     <React.Fragment key={item.id}>
                       <div
                         onClick={() => {
-                          if (hasChildren) {
-                            toggleExpand(item.id);
-                          }
                           navigateToDoc(item.slug);
                         }}
                         style={{
@@ -394,7 +398,17 @@ const DocsPage: React.FC = () => {
                             {t(item.labelKey)}
                           </span>
                         </div>
-                        {hasChildren && <ChevronIcon expanded={isExpanded} />}
+                        {hasChildren && (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleExpand(item.id);
+                            }}
+                            style={{ display: 'flex', alignItems: 'center', padding: 2 }}
+                          >
+                            <ChevronIcon expanded={isExpanded} />
+                          </div>
+                        )}
                       </div>
                       {/* Children (sub-items) */}
                       {hasChildren && isExpanded && item.children!.map((child) => {
